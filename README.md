@@ -1,4 +1,8 @@
-# SGFood-233 Image Classification
+# Building a food recognition and classification model for calorie estimation (Final Year Project)
+
+## Presentation
+- [Final Report](https://dr.ntu.edu.sg/entities/publication/50f6beb6-d83c-4f08-9f13-f5ce74cecd6c)
+- [Download PowerPoint](./slides/presentation.pptx)
 
 Food image classifier for 233 Singaporean food categories, trained on ~203K images. Best model (ConvNeXt-Base) achieves 84.55% validation accuracy on the cleaned dataset.
 
