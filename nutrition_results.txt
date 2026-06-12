@@ -1,0 +1,28 @@
+Search Term: nasi lemak
+==================================================
+
+Name: Nasi lemak (chicken cutlet set)
+Description: Coconut rice with fried chicken cutlet
+
+ADDITIONAL INFO:
+  Food Group: Grains and staples
+  Food Subgroup: Rice-based dishes
+  Edible Portion: 100%
+  Default Serving Size: 1 plate(s) = 423g
+  Alternative Serving Size(s): -
+  Source of Data: Lab Analysis
+
+NUTRITION (Per 100 g):
+  Energy (kcal): 177
+  Protein (g): 7.63
+  Total Fat (g): 12.18
+  Saturated Fat (g): 0.56
+  Trans Fat (g): -
+  Carbohydrate (g): 10.01
+  Sugar (g): 0.17
+  Added Sugar (g): -
+  Dietary Fibre (g): 1.54
+  Sodium (mg): 374
+  Potassium (mg): -
+  Calcium (mg): -
+  Iron (mg): -

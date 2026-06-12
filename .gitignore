@@ -1,0 +1,45 @@
+
+# Claude Code local settings (personal, machine-specific)
+.claude/settings.local.json
+CLAUDE.md
+
+# VS Code personal settings
+.vscode/settings.json
+
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+
+# model files and large binaries
+*.onnx
+*.ckpt
+*.pt
+*.pth
+*.npy
+
+# datasets
+foodsg-233
+foodsg-233_cleaned
+foodsg-233_train_val_split
+foodsg-233_train_val_test_split
+foodsg233_fastai_dataset
+uecfood-256
+uec256_fastai_dataset
+
+# removed images
+food_classifier_project/cleaning_results/removed_images_backup
+
+# training logs (TensorBoard + PyTorch Lightning — auto-generated, can be large)
+food_classifier_project/logs/
+food_classifier_project/lightning_logs/
+
+# React Native — build artifacts and dependencies
+reactnative_frontend/foodai/node_modules/
+reactnative_frontend/foodai/.expo/
+reactnative_frontend/foodai/dist/
+reactnative_frontend/foodai/web-build/
+reactnative_frontend/foodai/.kotlin/
+reactnative_frontend/foodai/ios/
+reactnative_frontend/foodai/android/
+reactnative_frontend/foodai/app-example/

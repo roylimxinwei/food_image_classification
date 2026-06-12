@@ -10,8 +10,10 @@ from fastai.vision.all import load_learner, PILImage
 import re
 import web_scrape
 
-BASE_URL = "https://focos.hpb.gov.sg/eservices/ENAT/"   # Example, confirm HPB tool URL
-SEARCH_URL = BASE_URL + "search"
+from transformers import Blip2Processor, Blip2ForConditionalGeneration
+import torch
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
 
 st.set_page_config(page_title="Multi-Model Food Classifier", page_icon="🍱", layout="wide")
 st.title("🍱 Food Classifier Comparison (Multiple Models)")
@@ -83,7 +85,7 @@ with tab_single:
                 with col:
                     st.markdown(f"**🧠Model: {model_name}**")
                     st.markdown(f"**Prediction:** {pred_class}")
-                    st.dataframe(df, use_container_width=True)
+                    st.dataframe(df, width='stretch')
         
         # --- Nutrition Lookup Section ---
         st.divider()
@@ -149,7 +151,7 @@ with tab_single:
                                     list(nutrition_data['nutrition'].items()),
                                     columns=["Nutrient", "Per 100g"]
                                 )
-                                st.dataframe(nutrition_df, use_container_width=True)
+                                st.dataframe(nutrition_df, width='stretch')
                             default_size = nutrition_data["extra_info"].get("Default Serving Size")
                             st.write(f"Default Serving Size: {default_size}")
                             serving_grams = re.search(r"(\d+(?:\.\d+)?)\s*g", default_size)
@@ -197,7 +199,7 @@ with tab_single:
                             )
 
                             st.subheader("Estimated Nutritional Values per Default Serving Size")
-                            st.dataframe(est_nutrition_df, use_container_width=True)
+                            st.dataframe(est_nutrition_df, width='stretch')
 
 
                         else:

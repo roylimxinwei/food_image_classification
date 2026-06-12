@@ -1,0 +1,21 @@
+torch
+torchvision
+timm
+pillow
+pandas
+scikit-learn
+matplotlib
+seaborn
+tqdm
+pytorch-lightning
+torchmetrics
+onnx
+onnxruntime
+
+# Deep analysis dependencies
+grad-cam
+fvcore
+umap-learn
+
+#huggingface_hub
+datasets
