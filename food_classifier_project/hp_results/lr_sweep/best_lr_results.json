@@ -1,0 +1,35 @@
+{
+  "ResNet50": {
+    "best_lr": 0.001,
+    "best_val_acc": 0.7828,
+    "checkpoint_path": "hp_results/lr_sweep\\best_lr_checkpoints\\resnet50_bestlr-epoch=09-val_acc=0.7828.ckpt",
+    "test_metrics": {
+      "top1_acc": 0.7868404353980573,
+      "top5_acc": 0.9348367257285107,
+      "macro_f1": 0.7755443519046408,
+      "weighted_f1": 0.7854730609418965
+    }
+  },
+  "ViT-Base": {
+    "best_lr": 5e-05,
+    "best_val_acc": 0.8157058358192444,
+    "checkpoint_path": "C:\\Users\\royli\\vscode projects\\food image classification\\food_classifier_project\\hp_results\\lr_sweep\\best_lr_checkpoints\\vit_base_patch16_224_bestlr-epoch=09-val_acc=0.8157.ckpt",
+    "test_metrics": {
+      "top1_acc": 0.8190559867232879,
+      "top5_acc": 0.9442573339190706,
+      "macro_f1": 0.8072204078123904,
+      "weighted_f1": 0.8175140695370801
+    }
+  },
+  "ConvNeXt-Base": {
+    "best_lr": 0.0001,
+    "best_val_acc": 0.844056248664856,
+    "checkpoint_path": "C:\\Users\\royli\\vscode projects\\food image classification\\food_classifier_project\\hp_results\\lr_sweep\\best_lr_checkpoints\\convnext_base_bestlr-epoch=09-val_acc=0.8441.ckpt",
+    "test_metrics": {
+      "top1_acc": 0.8405818323815102,
+      "top5_acc": 0.9565578171523406,
+      "macro_f1": 0.8303598390469831,
+      "weighted_f1": 0.8395578966300342
+    }
+  }
+}

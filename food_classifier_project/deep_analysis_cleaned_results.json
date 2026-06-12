@@ -1,0 +1,197 @@
+{
+  "dataset": "SGFood-233 (cleaned)",
+  "split": "test (20,487 images)",
+  "models": [
+    "CNN (ResNet50)",
+    "ViT",
+    "ConvNeXt"
+  ],
+  "accuracy": {
+    "CNN (ResNet50)": 0.7638014350563772,
+    "ViT": 0.8098794357397374,
+    "ConvNeXt": 0.8453165421974911
+  },
+  "macro_f1": {
+    "CNN (ResNet50)": 0.7479279805629324,
+    "ViT": 0.7970819041655085,
+    "ConvNeXt": 0.8360930821304228
+  },
+  "efficiency": {
+    "CNN (ResNet50)": {
+      "params_M": 23.985449,
+      "flops_G": 4.10994176,
+      "throughput": 201.44852034464265,
+      "peak_memory_MB": 2315.27392578125
+    },
+    "ViT": {
+      "params_M": 85.977833,
+      "flops_G": 16.86682368,
+      "throughput": 146.78851758770583,
+      "peak_memory_MB": 2218.39892578125
+    },
+    "ConvNeXt": {
+      "params_M": 87.805289,
+      "flops_G": 15.38285056,
+      "throughput": 109.9357660999823,
+      "peak_memory_MB": 2535.77392578125
+    }
+  },
+  "top_confused_pairs": {
+    "CNN (ResNet50)": [
+      [
+        "har cheong gai",
+        "fried chicken",
+        28
+      ],
+      [
+        "bee hoon",
+        "Bee hoon, goreng",
+        18
+      ],
+      [
+        "breakfast cereal",
+        "muesli",
+        18
+      ],
+      [
+        "tom yum noodle soup",
+        "Laksa",
+        18
+      ],
+      [
+        "Sweets",
+        "Chocolate",
+        17
+      ],
+      [
+        "char siew pau",
+        "steamed buns",
+        17
+      ],
+      [
+        "Mee siam, fried",
+        "Bee hoon, goreng",
+        15
+      ],
+      [
+        "chicken soup",
+        "vegetable soup",
+        15
+      ],
+      [
+        "Lontong with sayur lodeh",
+        "lontong",
+        14
+      ],
+      [
+        "Chocolate",
+        "Sweets",
+        13
+      ]
+    ],
+    "ViT": [
+      [
+        "char siew pau",
+        "steamed buns",
+        18
+      ],
+      [
+        "Sweets",
+        "Chocolate",
+        15
+      ],
+      [
+        "chicken soup",
+        "vegetable soup",
+        15
+      ],
+      [
+        "Snacks and Chips",
+        "Chocolate",
+        14
+      ],
+      [
+        "breakfast cereal",
+        "muesli",
+        14
+      ],
+      [
+        "Duck Rice",
+        "char siew",
+        13
+      ],
+      [
+        "Nuts",
+        "Chocolate",
+        13
+      ],
+      [
+        "cake",
+        "Chocolate",
+        13
+      ],
+      [
+        "Mee siam, fried",
+        "Mee siam",
+        12
+      ],
+      [
+        "Seafood Noodles Soup",
+        "sliced fish soup",
+        12
+      ]
+    ],
+    "ConvNeXt": [
+      [
+        "bee hoon",
+        "Bee hoon, goreng",
+        20
+      ],
+      [
+        "char siew pau",
+        "steamed buns",
+        18
+      ],
+      [
+        "Seafood Noodles Soup",
+        "sliced fish soup",
+        17
+      ],
+      [
+        "chicken soup",
+        "vegetable soup",
+        15
+      ],
+      [
+        "Chocolate",
+        "Sweets",
+        14
+      ],
+      [
+        "drunken prawn",
+        "fried prawn",
+        14
+      ],
+      [
+        "vegetable soup",
+        "chicken soup",
+        13
+      ],
+      [
+        "pasta - fettuccine",
+        "pasta - red sauce",
+        12
+      ],
+      [
+        "whole wheat",
+        "whole grain bread",
+        12
+      ],
+      [
+        "Lontong with sayur lodeh",
+        "lontong",
+        11
+      ]
+    ]
+  }
+}

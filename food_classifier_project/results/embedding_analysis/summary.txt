@@ -1,0 +1,89 @@
+======================================================================
+NB09d — Embedding Space Analysis: Consolidated Summary
+======================================================================
+
+## 1. Global Silhouette Scores
+  CNN (ResNet50)        dim=2048  cosine=0.0812  euclidean=0.0455  PCA-256=0.0937 (var=0.8556)
+  ViT                   dim= 768  cosine=0.1258  euclidean=0.0714  PCA-256=0.1426 (var=0.8633)
+  ConvNeXt              dim=1024  cosine=0.2496  euclidean=0.1515  PCA-256=0.3041 (var=0.7956)
+
+  Ranking (cosine): ConvNeXt > ViT > CNN (ResNet50)
+  Ranking (PCA-256): ConvNeXt > ViT > CNN (ResNet50)
+
+## 2. t-SNE Stability (5 seeds)
+  CNN (ResNet50)        -0.2083 +/- 0.0006
+  ViT                   0.0079 +/- 0.0013
+  ConvNeXt              0.1887 +/- 0.0009
+
+## 3. Per-Class Silhouette Highlights
+  Architecture-invariant difficult (all < 0.05): 39 classes
+    Barley
+    Bee hoon, goreng
+    Bee hoon, soto
+    Chinese fritters
+    Don, chicken teriyaki
+    Duck Rice
+    Dumpling noodle soup
+    Hor Fun
+    Katsudon
+    Laksa
+    Lontong with sayur lodeh
+    Mee bandung
+    Mee kuah
+    Mee siam, fried
+    Prawn Noodle
+    Rice, korean bulgogi beef
+    Rice, with dakgalbi
+    Seafood Noodles Soup
+    Tauhu Goreng
+    bee hoon
+    breakfast cereal
+    chicken soup
+    cooked brown rice
+    fried prawn
+    kebab - chicken
+    lontong
+    mee pok
+    mixed vegetables
+    preserved fruit snacks
+    roti john
+    satay bee hoon
+    sliced fish soup
+    steamed buns
+    tom yum noodle soup
+    tortilla - plain
+    whole wheat
+    wholegrain pasta
+    yam rice
+    yong tau foo
+
+## 4. Correlation: Silhouette vs Accuracy
+  CNN (ResNet50)             r=0.8643  p=6.81e-71
+  ViT                        r=0.8542  p=1.54e-67
+  ConvNeXt                   r=0.8781  p=6.38e-76
+  CNN→ConvNeXt gap           r=-0.1615  p=1.36e-02
+
+## 5. Error Taxonomy Validation
+  Centroid similarity for confused pairs:
+    har cheong gai <-> fried chicken: CNN_sim=0.979  ViT_sim=0.892  ConvNeXt_sim=0.754  [Texture-similar fried]
+    har cheong gai <-> ngoh hiang: CNN_sim=0.881  ViT_sim=0.578  ConvNeXt_sim=0.365  [Texture-similar fried]
+    Hor Fun <-> Kway Teow: CNN_sim=0.827  ViT_sim=0.688  ConvNeXt_sim=0.572  [Noodle type]
+    char siew pau <-> steamed buns: CNN_sim=0.939  ViT_sim=0.865  ConvNeXt_sim=0.814  [Steamed buns]
+    pitaya <-> mangosteen: CNN_sim=0.548  ViT_sim=0.381  ConvNeXt_sim=0.216  [Exotic fruit]
+
+## 6. Output Files
+  centroid_distances.csv                          541 bytes
+  correlation_plots.pdf                        32,448 bytes
+  correlation_plots.png                       389,104 bytes
+  correlation_results.csv                         349 bytes
+  features_cnn.npy                         167,829,632 bytes
+  features_convnext.npy                    83,914,880 bytes
+  features_vit.npy                         62,936,192 bytes
+  global_silhouette_scores.csv                    371 bytes
+  label_to_name.json                            5,806 bytes
+  labels.npy                                  164,024 bytes
+  per_class_silhouette.csv                     30,910 bytes
+  summary.txt                                       0 bytes
+  tsne_plot.pdf                               366,915 bytes
+  tsne_plot.png                             2,508,316 bytes
+  tsne_silhouette_seeds.csv                       546 bytes

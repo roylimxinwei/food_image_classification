@@ -1,0 +1,23 @@
+{
+  "ResNet-50": {
+    "backbone": "resnet50",
+    "dirty_val_acc": 0.7509,
+    "clean_val_acc": 0.7610697746276855,
+    "test_acc": 0.7638014350563772,
+    "cleaning_impact_pp": 1.0169774627685535
+  },
+  "ViT-Base": {
+    "backbone": "vit_base_patch16_224",
+    "dirty_val_acc": 0.8016,
+    "clean_val_acc": 0.8103306889533997,
+    "test_acc": 0.8099770586225411,
+    "cleaning_impact_pp": 0.8730688953399679
+  },
+  "ConvNeXt-Base": {
+    "backbone": "convnext_base",
+    "dirty_val_acc": 0.8345,
+    "clean_val_acc": 0.8455,
+    "test_acc": 0.845365353638893,
+    "cleaning_impact_pp": 1.100000000000001
+  }
+}

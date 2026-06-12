@@ -1,0 +1,5 @@
+model,metric,spearman_r,p_value
+CNN (ResNet50),silhouette_vs_accuracy,0.8643196035713846,6.8106508368030145e-71
+ViT,silhouette_vs_accuracy,0.8541569179009537,1.538760913704381e-67
+ConvNeXt,silhouette_vs_accuracy,0.8781487403279944,6.378598953218815e-76
+CNN→ConvNeXt gap,silhouette_gap_vs_accuracy_gap,-0.1615495229722597,0.013552030257514173

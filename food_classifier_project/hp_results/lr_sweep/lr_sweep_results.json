@@ -1,0 +1,98 @@
+{
+  "ResNet50": [
+    {
+      "lr": 1e-05,
+      "best_val_acc": 0.4199,
+      "val_top5_acc": 0.71,
+      "checkpoint_path": "hp_results/lr_sweep/checkpoints/resnet50_lr1e-05-epoch=04-val_acc=0.4199.ckpt"
+    },
+    {
+      "lr": 5e-05,
+      "best_val_acc": 0.6931,
+      "val_top5_acc": 0.8931,
+      "checkpoint_path": "hp_results/lr_sweep/checkpoints/resnet50_lr5e-05-epoch=04-val_acc=0.6931.ckpt"
+    },
+    {
+      "lr": 0.0001,
+      "best_val_acc": 0.738,
+      "val_top5_acc": 0.9159,
+      "checkpoint_path": "hp_results/lr_sweep/checkpoints/resnet50_lr1e-04-epoch=04-val_acc=0.7380.ckpt"
+    },
+    {
+      "lr": 0.0003,
+      "best_val_acc": 0.7771,
+      "val_top5_acc": 0.9328,
+      "checkpoint_path": "hp_results/lr_sweep/checkpoints/resnet50_lr3e-04-epoch=04-val_acc=0.7771.ckpt"
+    },
+    {
+      "lr": 0.001,
+      "best_val_acc": 0.7888,
+      "val_top5_acc": 0.9358,
+      "checkpoint_path": "hp_results/lr_sweep/checkpoints/resnet50_lr1e-03-epoch=04-val_acc=0.7888.ckpt"
+    }
+  ],
+  "ViT-Base": [
+    {
+      "lr": 1e-05,
+      "best_val_acc": 0.8144,
+      "val_top5_acc": 0.9474,
+      "checkpoint_path": "hp_results/lr_sweep/checkpoints/vit_base_patch16_224_lr1e-05-epoch=04-val_acc=0.8144.ckpt"
+    },
+    {
+      "lr": 5e-05,
+      "best_val_acc": 0.8253,
+      "val_top5_acc": 0.9488,
+      "checkpoint_path": "hp_results/lr_sweep/checkpoints/vit_base_patch16_224_lr5e-05-epoch=04-val_acc=0.8253.ckpt"
+    },
+    {
+      "lr": 0.0001,
+      "best_val_acc": 0.8103,
+      "val_top5_acc": 0.9441,
+      "checkpoint_path": "hp_results/lr_sweep/checkpoints/vit_base_patch16_224_lr1e-04-epoch=04-val_acc=0.8103.ckpt"
+    },
+    {
+      "lr": 0.0003,
+      "best_val_acc": 0.6676,
+      "val_top5_acc": 0.875,
+      "checkpoint_path": "hp_results/lr_sweep/checkpoints/vit_base_patch16_224_lr3e-04-epoch=04-val_acc=0.6676.ckpt"
+    },
+    {
+      "lr": 0.001,
+      "best_val_acc": 0.342,
+      "val_top5_acc": 0.6108,
+      "checkpoint_path": "hp_results/lr_sweep/checkpoints/vit_base_patch16_224_lr1e-03-epoch=04-val_acc=0.3420.ckpt"
+    }
+  ],
+  "ConvNeXt-Base": [
+    {
+      "lr": 1e-05,
+      "best_val_acc": 0.8212,
+      "val_top5_acc": 0.953,
+      "checkpoint_path": "hp_results/lr_sweep/checkpoints/convnext_base_lr1e-05-epoch=04-val_acc=0.8212.ckpt"
+    },
+    {
+      "lr": 5e-05,
+      "best_val_acc": 0.8399266004562378,
+      "val_top5_acc": 0.9578185081481934,
+      "checkpoint_path": "C:\\Users\\royli\\vscode projects\\food image classification\\food_classifier_project\\hp_results\\lr_sweep\\checkpoints\\convnext_base_lr5e-05-epoch=04-val_acc=0.8399.ckpt"
+    },
+    {
+      "lr": 0.0001,
+      "best_val_acc": 0.8429746627807617,
+      "val_top5_acc": 0.9590967297554016,
+      "checkpoint_path": "C:\\Users\\royli\\vscode projects\\food image classification\\food_classifier_project\\hp_results\\lr_sweep\\checkpoints\\convnext_base_lr1e-04-epoch=04-val_acc=0.8430.ckpt"
+    },
+    {
+      "lr": 0.0003,
+      "best_val_acc": 0.8235062956809998,
+      "val_top5_acc": 0.9487725496292114,
+      "checkpoint_path": "C:\\Users\\royli\\vscode projects\\food image classification\\food_classifier_project\\hp_results\\lr_sweep\\checkpoints\\convnext_base_lr3e-04-epoch=04-val_acc=0.8235.ckpt"
+    },
+    {
+      "lr": 0.001,
+      "best_val_acc": 0.7570056915283203,
+      "val_top5_acc": 0.9204549193382263,
+      "checkpoint_path": "C:\\Users\\royli\\vscode projects\\food image classification\\food_classifier_project\\hp_results\\lr_sweep\\checkpoints\\convnext_base_lr1e-03-epoch=04-val_acc=0.7570.ckpt"
+    }
+  ]
+}

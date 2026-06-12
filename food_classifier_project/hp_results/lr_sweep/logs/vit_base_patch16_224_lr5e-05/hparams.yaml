@@ -1,0 +1,14 @@
+config: !!python/object:hyperparameter_tuning.ExperimentConfig
+  augmentation: basic
+  batch_size: 64
+  label_smoothing: 0.0
+  learning_rate: 5.0e-05
+  max_epochs: 5
+  model_name: vit_base_patch16_224
+  num_classes: 233
+  num_workers: 4
+  optimizer: AdamW
+  scheduler: cosine
+  seed: 42
+  warmup_epochs: 1
+  weight_decay: 0.0001

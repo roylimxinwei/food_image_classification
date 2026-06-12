@@ -1,0 +1,27 @@
+# Food Classifier Project - Requirements
+# Python 3.8+ recommended
+
+# Core ML
+torch>=2.0.0
+torchvision>=0.15.0
+pytorch-lightning>=2.0.0
+timm>=0.9.0
+
+# Data handling
+datasets>=2.14.0  # Hugging Face datasets
+Pillow>=9.0.0
+
+# Utilities
+numpy>=1.21.0
+matplotlib>=3.5.0
+rich>=12.0.0  # Nice progress bars
+
+# Optional: ONNX export
+onnx>=1.14.0
+onnxruntime>=1.15.0
+
+# Optional: Metrics
+scikit-learn>=1.0.0
+
+# Optional: TensorBoard logging
+tensorboard>=2.12.0

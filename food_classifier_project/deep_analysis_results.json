@@ -1,0 +1,195 @@
+{
+  "models": [
+    "CNN (ResNet50)",
+    "ViT",
+    "ConvNeXt"
+  ],
+  "accuracy": {
+    "CNN (ResNet50)": 0.7508941309828601,
+    "ViT": 0.8016104129614791,
+    "ConvNeXt": 0.834483162976137
+  },
+  "macro_f1": {
+    "CNN (ResNet50)": 0.7356926310072447,
+    "ViT": 0.7898655029941417,
+    "ConvNeXt": 0.8252606967464469
+  },
+  "efficiency": {
+    "CNN (ResNet50)": {
+      "params_M": 23.985449,
+      "flops_G": 4.10994176,
+      "throughput": 211.20174910794262,
+      "peak_memory_MB": 2315.27392578125
+    },
+    "ViT": {
+      "params_M": 85.977833,
+      "flops_G": 16.86682368,
+      "throughput": 142.75042716772978,
+      "peak_memory_MB": 2218.39892578125
+    },
+    "ConvNeXt": {
+      "params_M": 87.805289,
+      "flops_G": 15.38285056,
+      "throughput": 117.36699496688003,
+      "peak_memory_MB": 2535.77392578125
+    }
+  },
+  "top_confused_pairs": {
+    "CNN (ResNet50)": [
+      [
+        "bee hoon",
+        "Bee hoon, goreng",
+        50
+      ],
+      [
+        "char siew pau",
+        "steamed buns",
+        48
+      ],
+      [
+        "Sweets",
+        "Chocolate",
+        46
+      ],
+      [
+        "chicken soup",
+        "vegetable soup",
+        46
+      ],
+      [
+        "har cheong gai",
+        "fried chicken",
+        46
+      ],
+      [
+        "Mee siam, fried",
+        "Bee hoon, goreng",
+        45
+      ],
+      [
+        "Nuts",
+        "Chocolate",
+        42
+      ],
+      [
+        "steamed buns",
+        "char siew pau",
+        41
+      ],
+      [
+        "cream soup",
+        "mushroom soup",
+        38
+      ],
+      [
+        "whole wheat",
+        "whole grain bread",
+        38
+      ]
+    ],
+    "ViT": [
+      [
+        "Lontong with sayur lodeh",
+        "lontong",
+        44
+      ],
+      [
+        "Sweets",
+        "Chocolate",
+        41
+      ],
+      [
+        "char siew pau",
+        "steamed buns",
+        41
+      ],
+      [
+        "steamed buns",
+        "char siew pau",
+        37
+      ],
+      [
+        "Seafood Noodles Soup",
+        "sliced fish soup",
+        35
+      ],
+      [
+        "cream soup",
+        "mushroom soup",
+        34
+      ],
+      [
+        "whole wheat",
+        "whole grain bread",
+        34
+      ],
+      [
+        "lontong",
+        "Lontong with sayur lodeh",
+        33
+      ],
+      [
+        "chicken soup",
+        "vegetable soup",
+        31
+      ],
+      [
+        "Mee bandung",
+        "Mee rebus",
+        30
+      ]
+    ],
+    "ConvNeXt": [
+      [
+        "char siew pau",
+        "steamed buns",
+        44
+      ],
+      [
+        "Sweets",
+        "Chocolate",
+        43
+      ],
+      [
+        "steamed buns",
+        "char siew pau",
+        41
+      ],
+      [
+        "Lontong with sayur lodeh",
+        "lontong",
+        38
+      ],
+      [
+        "chicken soup",
+        "vegetable soup",
+        37
+      ],
+      [
+        "har cheong gai",
+        "fried chicken",
+        37
+      ],
+      [
+        "Seafood Noodles Soup",
+        "sliced fish soup",
+        35
+      ],
+      [
+        "bee hoon",
+        "Bee hoon, goreng",
+        35
+      ],
+      [
+        "whole wheat",
+        "whole grain bread",
+        35
+      ],
+      [
+        "lontong",
+        "Lontong with sayur lodeh",
+        34
+      ]
+    ]
+  }
+}

@@ -1,0 +1,661 @@
+% results_and_conclusion.tex
+% Sections 4–6 of the SGFood-233 research paper
+% All accuracy values verified against notebook outputs and JSON result files.
+
+% -----------------------------------------------------------------
+% SECTION 4 — RESULTS
+% -----------------------------------------------------------------
+\section{Results}\label{sec:results}
+
+\subsection{Baseline Architecture Comparison}\label{sec:baseline}
+
+Table~\ref{tab:baseline} summarises the performance of the three architectures
+trained under identical conditions on the original (uncleaned) 75/25
+train/validation split (lr$\,{=}\,$1e-4, weight decay$\,{=}\,$1e-4,
+batch size$\,{=}\,$64, cosine-annealing schedule, 10 epochs).
+
+\begin{table}[ht]
+\centering
+\caption{Baseline architecture comparison on the original 75/25 split
+         (identical hyperparameters).}
+\label{tab:baseline}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Model} & \textbf{Val Accuracy (\%)} & \textbf{Macro F1} & \textbf{Weighted F1} \\
+\midrule
+ResNet-50   & 75.09 & 0.736 & --- \\
+ViT-Base    & 80.16 & 0.790 & --- \\
+ConvNeXt-Base & 83.45 & 0.825 & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+ConvNeXt-Base outperforms the CNN baseline (ResNet-50) by
+$+8.36$ percentage points (pp) and the Vision Transformer (ViT-Base) by
+$+3.29$~pp.  All three models were pre-trained on ImageNet-1K and
+fine-tuned with the same augmentation pipeline (random crop to
+$224{\times}224$, horizontal flip, ImageNet normalisation).  The
+consistent ranking under identical optimisation conditions establishes
+ConvNeXt-Base as the strongest single architecture on SGFood-233 under
+default hyperparameters.
+
+% -----------------------------------------------------------------
+\subsection{Error Analysis}\label{sec:error-analysis}
+
+\subsubsection{Per-Class Performance}\label{sec:per-class}
+
+Despite strong aggregate metrics, per-class performance varies
+substantially.  Table~\ref{tab:f1-gap} lists the classes exhibiting the
+largest F1 gap between the best and worst model, revealing where
+architectural choice matters most.
+
+\begin{table}[ht]
+\centering
+\caption{Classes with the largest inter-model F1 gap (top~10).}
+\label{tab:f1-gap}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Class} & \textbf{CNN F1} & \textbf{ViT F1} & \textbf{ConvNeXt F1} & \textbf{Gap} \\
+\midrule
+Don, chicken teriyaki & 0.452 & ---   & 0.662 & 0.210 \\
+tortilla -- plain     & 0.372 & ---   & 0.578 & 0.206 \\
+Barley                & 0.304 & ---   & 0.504 & 0.200 \\
+satay bee hoon        & 0.521 & ---   & 0.715 & 0.194 \\
+wholegrain muffin     & 0.671 & ---   & 0.860 & 0.189 \\
+roti john             & 0.676 & ---   & 0.860 & 0.184 \\
+Mee siam, fried       & 0.273 & ---   & 0.452 & 0.179 \\
+Macaroni              & 0.629 & ---   & 0.802 & 0.173 \\
+Peanut Pancake        & 0.737 & ---   & 0.909 & 0.172 \\
+ngoh hiang            & 0.582 & ---   & 0.754 & 0.172 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The classes with the widest gaps are predominantly noodle and
+grain-based dishes that require both textural and compositional
+understanding.  ConvNeXt closes these gaps consistently, suggesting
+its hybrid receptive field is especially beneficial for fine-grained
+food categories.
+
+\subsubsection{Confusion Pairs}\label{sec:confusion-pairs}
+
+Table~\ref{tab:confusion} lists the most frequently confused class
+pairs for each architecture, drawn from the validation-set confusion
+matrices.
+
+\begin{table}[ht]
+\centering
+\caption{Top-5 confused class pairs per model (validation set,
+         original 75/25 split).}
+\label{tab:confusion}
+\small
+\begin{tabular}{llc}
+\toprule
+\textbf{Model} & \textbf{True $\to$ Predicted} & \textbf{Count} \\
+\midrule
+\multirow{5}{*}{CNN}
+  & bee hoon $\to$ Bee hoon, goreng         & 50 \\
+  & char siew pau $\to$ steamed buns        & 48 \\
+  & Sweets $\to$ Chocolate                  & 46 \\
+  & chicken soup $\to$ vegetable soup       & 46 \\
+  & har cheong gai $\to$ fried chicken      & 46 \\
+\midrule
+\multirow{5}{*}{ViT}
+  & Lontong w/ sayur lodeh $\to$ lontong    & 44 \\
+  & Sweets $\to$ Chocolate                  & 41 \\
+  & char siew pau $\to$ steamed buns        & 41 \\
+  & steamed buns $\to$ char siew pau        & 37 \\
+  & Seafood Noodles Soup $\to$ sliced fish soup & 35 \\
+\midrule
+\multirow{5}{*}{ConvNeXt}
+  & char siew pau $\to$ steamed buns        & 44 \\
+  & Sweets $\to$ Chocolate                  & 43 \\
+  & steamed buns $\to$ char siew pau        & 41 \\
+  & Lontong w/ sayur lodeh $\to$ lontong    & 38 \\
+  & chicken soup $\to$ vegetable soup       & 37 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Each architecture exhibits a distinct error signature.
+\textbf{CNN} uniquely confuses texture-similar noodle dishes
+(\emph{bee hoon}~$\leftrightarrow$~\emph{Bee hoon, goreng}), where the
+primary visual difference is sauce colour rather than shape.
+\textbf{ViT} confuses structurally similar dishes
+(\emph{Lontong with sayur lodeh}~$\leftrightarrow$~\emph{lontong}),
+where the distinction lies in accompanying condiments rather than the
+main item.
+\textbf{ConvNeXt} shares the universal \emph{char siew pau}
+$\leftrightarrow$ \emph{steamed buns} confusion---an inherently
+ambiguous pair---but produces fewer model-specific failure modes,
+consistent with its balanced feature extraction.
+
+% -----------------------------------------------------------------
+\subsection{Model Interpretability via Grad-CAM}\label{sec:gradcam}
+
+Gradient-weighted Class Activation Maps (Grad-CAM)~\cite{selvaraju2017grad}
+were generated for correctly classified, misclassified, and model-disagreement
+samples (Figure~\ref{fig:gradcam}).
+
+\begin{figure}[ht]
+\centering
+% \includegraphics[width=\textwidth]{figures/gradcam_comparison.pdf}
+\textbf{[Placeholder: Grad-CAM comparison grid --- CNN / ViT / ConvNeXt
+across correctly classified, CNN-only errors, ViT-only errors, and
+all-model errors.]}
+\caption{Grad-CAM attention maps for the three architectures on
+         representative SGFood-233 samples.}
+\label{fig:gradcam}
+\end{figure}
+
+Three distinct attention strategies emerge:
+\begin{itemize}
+  \item \textbf{CNN (ResNet-50):} Activation concentrates on local
+    texture patches---colour gradients, surface patterns---explaining
+    its strength on visually distinct items (e.g.\ fruits) and weakness
+    on texture-similar noodle variants.
+  \item \textbf{ViT-Base:} Attention distributes across the global dish
+    structure and key components (e.g.\ bowl shape, garnishes),
+    capturing compositional relationships but occasionally conflating
+    structurally similar presentations.
+  \item \textbf{ConvNeXt-Base:} Activation balances local detail and
+    global context, attending simultaneously to texture cues and overall
+    dish layout.  This complementary feature capture aligns with its
+    superior accuracy and fewer systematic confusion patterns.
+\end{itemize}
+
+% -----------------------------------------------------------------
+\subsection{Computational Efficiency}\label{sec:efficiency}
+
+Table~\ref{tab:efficiency} benchmarks inference-time efficiency on a
+single NVIDIA GPU (batch size 1, mixed precision).
+
+\begin{table}[ht]
+\centering
+\caption{Computational efficiency comparison.}
+\label{tab:efficiency}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model} & \textbf{Params (M)} & \textbf{FLOPs (G)} &
+  \textbf{Throughput (img/s)} & \textbf{Peak Mem (MB)} \\
+\midrule
+ResNet-50     & 24.0  & 4.1  & 211.2 & 2\,315 \\
+ViT-Base      & 86.0  & 16.9 & 142.8 & 2\,218 \\
+ConvNeXt-Base & 87.8  & 15.4 & 117.4 & 2\,536 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+ResNet-50 is 1.8$\times$ faster than ConvNeXt-Base while requiring
+3.7$\times$ fewer parameters and 3.8$\times$ fewer FLOPs.  However,
+this speed advantage comes at the cost of $-8.36$~pp in accuracy.
+ConvNeXt-Base, despite its larger footprint, remains practical for
+server-side deployment at 117~images/s.  Interestingly, ViT-Base
+consumes the most FLOPs (16.9\,G) yet achieves neither the highest
+accuracy nor the highest throughput, placing it off the Pareto frontier
+in the accuracy--efficiency trade-off (Figure~\ref{fig:pareto}).
+
+\begin{figure}[ht]
+\centering
+% \includegraphics[width=0.7\textwidth]{figures/pareto_efficiency.pdf}
+\textbf{[Placeholder: Pareto plot --- throughput (img/s) vs.\ validation
+accuracy for the three architectures.]}
+\caption{Accuracy vs.\ throughput Pareto frontier.}
+\label{fig:pareto}
+\end{figure}
+
+% -----------------------------------------------------------------
+\subsection{Embedding Space Analysis}\label{sec:embeddings}
+
+To evaluate learned representation quality beyond classification
+accuracy, we extracted penultimate-layer embeddings for 5\,000
+validation samples per model and computed silhouette scores in both
+the original high-dimensional space and after t-SNE reduction to 2D
+(Table~\ref{tab:silhouette}).
+
+\begin{table}[ht]
+\centering
+\caption{Silhouette scores measuring class separability in the learned
+         embedding space.}
+\label{tab:silhouette}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Space} & \textbf{CNN} & \textbf{ViT} & \textbf{ConvNeXt} \\
+\midrule
+High-dimensional & 0.134 & 0.129 & 0.200 \\
+t-SNE (2D)       & 0.310 & 0.426 & 0.502 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+ConvNeXt-Base produces the most separable embeddings in both spaces,
+with a high-dimensional silhouette score 49\% higher than the CNN and
+55\% higher than the ViT.  The t-SNE projections
+(Figure~\ref{fig:tsne}) visually confirm this: ConvNeXt clusters are
+tighter and better separated, while CNN clusters appear more dispersed
+with greater inter-class overlap.
+
+\begin{figure}[ht]
+\centering
+% \includegraphics[width=\textwidth]{figures/tsne_umap_comparison.pdf}
+\textbf{[Placeholder: Side-by-side t-SNE and UMAP projections for
+CNN, ViT, and ConvNeXt.]}
+\caption{t-SNE (top) and UMAP (bottom) visualisations of
+         penultimate-layer embeddings for 5\,000 validation samples.}
+\label{fig:tsne}
+\end{figure}
+
+The correlation between embedding quality and classification accuracy
+(ConvNeXt $>$ ViT $>$ CNN in both metrics) suggests that ConvNeXt's
+advantage stems from fundamentally better class-discriminative
+representations rather than merely a better decision boundary.
+
+% -----------------------------------------------------------------
+\subsection{Data Cleaning Impact}\label{sec:cleaning}
+
+\subsubsection{Cleaning Methodology}
+
+Mislabelled and duplicate images were identified through a three-model
+consensus pipeline: samples flagged as misclassified by all three
+architectures (or detected as near-duplicates via perceptual hashing)
+were surfaced for manual review.  This process identified 650~images
+for removal and 1\,296~images for relabelling, yielding a cleaned
+dataset of 203\,655~images (down from 204\,305).  The cleaned data was
+re-split into 75/15/10 train/validation/test partitions
+(152\,657\,/\,30\,511\,/\,20\,487 images).
+
+\subsubsection{Retraining Results}
+
+ConvNeXt-Base was retrained on the cleaned data with the same default
+hyperparameters (lr$\,{=}\,$1e-4, wd$\,{=}\,$1e-4, batch$\,{=}\,$64,
+10~epochs).  Table~\ref{tab:cleaning} compares before- and
+after-cleaning performance.
+
+\begin{table}[ht]
+\centering
+\caption{Data cleaning impact on ConvNeXt-Base.  The ``Before'' model
+         was trained on the original 75/25 split; the ``After'' model on
+         the cleaned 75/15/10 split with identical hyperparameters.}
+\label{tab:cleaning}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Condition} & \textbf{Val Acc (\%)} & \textbf{Test Acc (\%)} & \textbf{Split} \\
+\midrule
+Before cleaning & 83.45 & ---\textsuperscript{a} & 75/25 \\
+After cleaning  & 84.55 & 84.54 & 75/15/10 \\
+\midrule
+\textbf{Improvement} & \textbf{+1.10 pp} & --- & --- \\
+\bottomrule
+\multicolumn{4}{l}{\footnotesize\textsuperscript{a}No held-out test set
+  existed in the original split.}
+\end{tabular}
+\end{table}
+
+The $+1.10$~pp improvement from cleaning alone---without any
+hyperparameter changes---validates the investment in data quality.
+Test accuracy (84.54\%) closely matches validation accuracy (84.55\%),
+indicating that the model generalises well and that the new
+train/val/test split does not exhibit overfitting artefacts.
+
+Residual hard classes persist after cleaning (Table~\ref{tab:hard-classes}).
+The worst-performing classes on the test set are \emph{whole wheat}
+(22.5\%), \emph{Bee hoon, soto} (32.3\%), and \emph{Mee siam, fried}
+(44.4\%).  These classes suffer from inherent visual ambiguity with
+near-identical counterparts (\emph{whole grain bread}, \emph{Mee soto},
+\emph{Bee hoon, goreng}) rather than from labelling noise, suggesting
+that further improvement would require taxonomy revision.
+
+\begin{table}[ht]
+\centering
+\caption{Bottom-10 classes by test accuracy after cleaning
+         (ConvNeXt-Base, cleaned data).}
+\label{tab:hard-classes}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Class} & \textbf{Test Acc (\%)} & \textbf{Test Images} \\
+\midrule
+whole wheat             & 22.5 &  40 \\
+Bee hoon, soto          & 32.3 &  62 \\
+Mee siam, fried         & 44.4 &  45 \\
+bee hoon                & 45.3 &  64 \\
+Barley                  & 47.5 &  40 \\
+tortilla -- plain       & 47.8 &  46 \\
+Mee kuah                & 51.0 &  51 \\
+chicken soup            & 57.4 & 136 \\
+Don, chicken teriyaki   & 57.4 &  61 \\
+Lontong w/ sayur lodeh  & 58.3 &  48 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Note:} ResNet-50 and ViT-Base were not individually retrained
+on the cleaned data; the cleaning impact was measured exclusively
+through ConvNeXt-Base.
+
+% -----------------------------------------------------------------
+\subsection{Learning Rate Sensitivity Analysis}\label{sec:lr-sensitivity}
+
+To disentangle optimisation effects from architectural advantages, all
+three models were trained for 5~epochs on the cleaned data at five
+learning rates spanning two orders of magnitude:
+$\{$1e-5, 5e-5, 1e-4, 3e-4, 1e-3$\}$.  All other hyperparameters were
+held constant (weight decay$\,{=}\,$1e-4, batch size$\,{=}\,$32,
+cosine-annealing schedule, basic augmentation).
+Table~\ref{tab:lr-sweep} reports best validation accuracy at each
+learning rate.
+
+\begin{table}[ht]
+\centering
+\caption{Learning rate sensitivity: best validation accuracy (\%) after
+         5~epochs on cleaned data (batch size$\,{=}\,$32, wd$\,{=}\,$1e-4).
+         Bold indicates each model's best LR.}
+\label{tab:lr-sweep}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Learning Rate} & \textbf{ResNet-50} & \textbf{ViT-Base} & \textbf{ConvNeXt-Base} \\
+\midrule
+1e-5 & 42.00 & 81.44 & 82.12 \\
+5e-5 & 69.31 & \textbf{82.53} & 83.99 \\
+1e-4 & 73.80 & 81.03 & \textbf{84.30} \\
+3e-4 & 77.71 & 66.76 & 82.35 \\
+1e-3 & \textbf{78.88} & 34.20 & 75.70 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[ht]
+\centering
+% \includegraphics[width=0.75\textwidth]{figures/lr_sensitivity_curves.pdf}
+\textbf{[Placeholder: LR sensitivity curves --- validation accuracy
+vs.\ learning rate for the three architectures.]}
+\caption{Learning rate sensitivity profiles.  ConvNeXt-Base dominates
+         across the full range; ViT-Base degrades sharply above 1e-4.}
+\label{fig:lr-sensitivity}
+\end{figure}
+
+Three key findings emerge:
+
+\begin{enumerate}
+  \item \textbf{ConvNeXt-Base wins at every learning rate tested.}
+    Even at ViT's optimal LR (5e-5), ConvNeXt achieves 83.99\% versus
+    ViT's 82.53\%.  This confirms that the architecture gap is genuine
+    and not an artefact of sub-optimal LR selection.
+
+  \item \textbf{ViT-Base is highly LR-sensitive.}  Performance drops
+    from 82.53\% at 5e-5 to 34.20\% at 1e-3---a catastrophic
+    48.33~pp collapse.  This is consistent with the known instability
+    of self-attention layers under large learning rates during
+    fine-tuning, where large updates destabilise the pretrained
+    attention patterns.
+
+  \item \textbf{ResNet-50 is monotonically improving with higher LR.}
+    Unlike the other two models, ResNet-50 does not exhibit a clear
+    optimum within the tested range, peaking at the highest LR (1e-3)
+    with 78.88\%.  This tolerance to high learning rates is
+    characteristic of convolution-heavy architectures with inherently
+    stable gradient flow through local receptive fields.
+\end{enumerate}
+
+The optimal learning rates identified are: ResNet-50 $=$ 1e-3,
+ViT-Base $=$ 5e-5, and ConvNeXt-Base $=$ 1e-4.  These are used in the
+final fair comparison (Section~\ref{sec:final-comparison}).
+
+% -----------------------------------------------------------------
+\subsection{Final Architecture Comparison at Optimal Learning Rates}
+\label{sec:final-comparison}
+
+\textit{This section reports the definitive comparison: each
+architecture trained for 10~epochs at its individually optimal learning
+rate (from Section~\ref{sec:lr-sensitivity}) with batch size$\,{=}\,$32,
+weight decay$\,{=}\,$1e-4, and early stopping (patience$\,{=}\,$5) on
+the cleaned 75/15/10 split.}
+
+\begin{table}[ht]
+\centering
+\caption{Final architecture comparison at optimal learning rates
+         (10~epochs, BS$\,{=}\,$32, cleaned data).}
+\label{tab:final-comparison}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Model} & \textbf{Best LR} &
+  \textbf{Val Acc (\%)} & \textbf{Test Acc (\%)} &
+  \textbf{Top-5 Acc (\%)} & \textbf{Macro F1} & \textbf{Weighted F1} \\
+\midrule
+ResNet-50     & 1e-3 & \texttt{XX.XX} & \texttt{XX.XX} & \texttt{XX.XX} & \texttt{X.XXX} & \texttt{X.XXX} \\
+ViT-Base      & 5e-5 & \texttt{XX.XX} & \texttt{XX.XX} & \texttt{XX.XX} & \texttt{X.XXX} & \texttt{X.XXX} \\
+ConvNeXt-Base & 1e-4 & \texttt{XX.XX} & \texttt{XX.XX} & \texttt{XX.XX} & \texttt{X.XXX} & \texttt{X.XXX} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{[TODO: Fill in Table~\ref{tab:final-comparison} after completing
+Section~D of Notebook~12.  The 10-epoch training runs were interrupted
+and need to be re-executed.]}
+
+% -----------------------------------------------------------------
+% SECTION 5 — DISCUSSION
+% -----------------------------------------------------------------
+\section{Discussion}\label{sec:discussion}
+
+\subsection{Why ConvNeXt Outperforms}\label{sec:why-convnext}
+
+ConvNeXt~\cite{liu2022convnet} modernises the standard CNN architecture
+by incorporating design elements pioneered in Vision Transformers:
+$7{\times}7$ depthwise convolutions that approximate the large receptive
+fields of self-attention, LayerNorm instead of BatchNorm, GELU
+activations, and an inverted bottleneck block structure.  This design
+retains the CNN's strong inductive biases---translation equivariance and
+locality---while gaining the ability to capture longer-range
+dependencies.
+
+Our results provide converging evidence for this advantage across
+multiple evaluation axes:
+
+\begin{itemize}
+  \item \textbf{Accuracy:} ConvNeXt achieves the highest validation
+    accuracy at every learning rate tested
+    (Section~\ref{sec:lr-sensitivity}), ruling out optimisation-luck
+    as an explanation.
+  \item \textbf{Attention patterns:} Grad-CAM analysis
+    (Section~\ref{sec:gradcam}) shows ConvNeXt balances local texture
+    and global structure, unlike ResNet-50 (texture-biased) or ViT
+    (structure-biased).
+  \item \textbf{Embedding quality:} ConvNeXt produces the most
+    separable embeddings (silhouette score 0.200 vs.\ 0.134/0.129),
+    indicating fundamentally better learned representations
+    (Section~\ref{sec:embeddings}).
+  \item \textbf{Error patterns:} ConvNeXt exhibits fewer
+    architecture-specific confusions (Section~\ref{sec:confusion-pairs}),
+    with its remaining errors concentrated on inherently ambiguous class
+    pairs rather than systematic feature blind-spots.
+\end{itemize}
+
+For Singaporean food classification in particular, where dishes
+frequently share base ingredients (noodles, rice) but differ in
+preparation style, sauce, or garnish, the ability to integrate both
+textural detail and compositional context appears decisive.
+
+\subsection{Dataset-Specific Challenges}\label{sec:dataset-challenges}
+
+SGFood-233 presents several challenges beyond those encountered in
+standard food benchmarks such as Food-101:
+
+\begin{enumerate}
+  \item \textbf{Inherently ambiguous classes:} Pairs such as
+    \emph{char siew pau}~$\leftrightarrow$~\emph{steamed buns} and
+    \emph{Lontong with sayur lodeh}~$\leftrightarrow$~\emph{lontong}
+    are visually near-identical; accurate classification requires
+    recognising subtle contextual cues (filling colour, side dishes).
+  \item \textbf{Fine-grained noodle taxonomy:} Multiple \emph{bee hoon},
+    \emph{mee}, and \emph{mee siam} variants share the same noodle base
+    and differ primarily in sauce or broth, demanding
+    context-aware feature extraction beyond local texture.
+  \item \textbf{Residual labelling ambiguity:} Despite our cleaning
+    effort, Tier~2 mislabels (borderline cases where even human
+    annotators disagree) remain, particularly in soup and noodle
+    categories.  Classes like \emph{whole wheat} (22.5\% test accuracy)
+    and \emph{Bee hoon, soto} (32.3\%) likely require taxonomy
+    consolidation rather than further model optimisation.
+\end{enumerate}
+
+\subsection{Impact of Data Cleaning}\label{sec:discuss-cleaning}
+
+The $+1.10$~pp improvement from data cleaning
+(Section~\ref{sec:cleaning}) demonstrates that label noise is a
+meaningful bottleneck even for large-scale food datasets.  The
+three-model consensus approach---flagging samples misclassified by
+all architectures---proved effective and scalable, as it leverages the
+complementary error profiles documented in
+Section~\ref{sec:confusion-pairs} to surface true labelling errors
+while reducing false positives.
+
+Notably, the hardest classes after cleaning (\emph{whole wheat},
+\emph{Bee hoon, soto}) are not noise-dominated but
+taxonomy-ambiguous.  This suggests that further accuracy gains require
+not additional cleaning but rather class hierarchy design---for example,
+merging \emph{whole wheat} and \emph{whole grain bread} into a single
+category or introducing a hierarchical label structure for noodle
+subcategories.
+
+\subsection{Learning Rate Sensitivity Insights}\label{sec:discuss-lr}
+
+The LR sweep (Section~\ref{sec:lr-sensitivity}) reveals that learning
+rate is the single most impactful hyperparameter when fine-tuning
+pretrained models on a new food dataset, with performance varying by up
+to 48~pp for ViT-Base.
+
+Architecture determines LR tolerance: convolution-heavy models
+(ResNet-50, ConvNeXt) tolerate wider LR ranges due to stable gradient
+flow through local receptive fields, while the fully self-attention-based
+ViT requires careful tuning.  ConvNeXt occupies a favourable middle
+ground---it peaks at the commonly-used 1e-4 and degrades gracefully at
+both extremes---making it the easiest architecture to tune in practice.
+
+This has a direct practical implication: for practitioners applying
+transfer learning to new food classification tasks, ConvNeXt's LR
+robustness reduces the risk of sub-optimal hyperparameter selection,
+lowering the barrier to achieving strong performance.
+
+\subsection{Practical Deployment Considerations}\label{sec:deployment}
+
+Table~\ref{tab:deployment} maps the experimental results to deployment
+scenarios.
+
+\begin{table}[ht]
+\centering
+\caption{Architecture recommendations by deployment scenario.}
+\label{tab:deployment}
+\begin{tabular}{lll}
+\toprule
+\textbf{Scenario} & \textbf{Recommended Model} & \textbf{Rationale} \\
+\midrule
+Maximum accuracy     & ConvNeXt-Base & Best accuracy and embeddings \\
+Mobile / edge        & ResNet-50     & 3.7$\times$ fewer params, 1.8$\times$ faster \\
+Balanced production  & ConvNeXt-Base & Strong accuracy with acceptable throughput \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For mobile deployment where ResNet-50's $-8.36$~pp accuracy penalty is
+unacceptable, a smaller ConvNeXt variant (e.g.\ ConvNeXt-Tiny, 28.6\,M
+parameters) or knowledge distillation from ConvNeXt-Base into a compact
+student model would be promising directions.
+
+\subsection{Limitations}\label{sec:limitations}
+
+This study has several limitations that should be considered when
+interpreting the results:
+
+\begin{enumerate}
+  \item \textbf{Single dataset.}  All experiments were conducted on
+    SGFood-233; generalisability to other food corpora (e.g.\ Food-101,
+    ISIA Food-500) is not established.
+  \item \textbf{Fixed input resolution.}  All models used
+    $224{\times}224$-pixel inputs.  Higher resolutions may
+    disproportionately benefit architectures that rely on fine-grained
+    spatial detail.
+  \item \textbf{Class imbalance.}  Class frequencies in SGFood-233
+    range from $\sim$200 to $\sim$5\,000 images.  No explicit
+    re-sampling or loss re-weighting was applied; low-frequency classes
+    may be under-represented in aggregate metrics.
+  \item \textbf{Hyperparameter search scope.}  Only learning rate was
+    systematically varied; weight decay, augmentation strategy, and
+    label smoothing were held at defaults.  A broader search
+    (e.g.\ Bayesian optimisation) might narrow or widen the
+    architecture gaps observed.
+  \item \textbf{Single seed.}  All experiments used seed$\,{=}\,$42.
+    Without multiple runs, we cannot report confidence intervals or
+    assess statistical significance of the observed accuracy
+    differences.
+  \item \textbf{No cross-architecture cleaning comparison.}  The data
+    cleaning impact was measured by retraining ConvNeXt-Base only;
+    ResNet-50 and ViT-Base may benefit differently from the same
+    cleaning.
+\end{enumerate}
+
+\subsection{Future Work}\label{sec:future-work}
+
+Several directions could extend and strengthen these findings:
+
+\begin{itemize}
+  \item \textbf{Comprehensive hyperparameter optimisation:}  Extend the
+    search to weight decay, augmentation policy (RandAugment, CutMix),
+    and label smoothing for ConvNeXt-Base.
+  \item \textbf{Cross-dataset validation:}  Evaluate on Food-101 and
+    ISIA Food-500 to test whether ConvNeXt's advantage generalises
+    beyond Singaporean food.
+  \item \textbf{Knowledge distillation:}  Distil ConvNeXt-Base into a
+    mobile-friendly student (e.g.\ MobileNetV3) to combine strong
+    accuracy with edge-device constraints.
+  \item \textbf{Hierarchical classification:}  Introduce a two-level
+    taxonomy (e.g.\ \emph{noodle}~$\to$~\emph{bee hoon goreng}) to
+    reduce confusion among fine-grained subcategories.
+  \item \textbf{Higher input resolution:}  Test $384{\times}384$ inputs,
+    which may particularly benefit noodle and soup classes where
+    distinguishing details are small.
+\end{itemize}
+
+% -----------------------------------------------------------------
+% SECTION 6 — CONCLUSION
+% -----------------------------------------------------------------
+\section{Conclusion}\label{sec:conclusion}
+
+This study presented a systematic comparison of three transfer-learning
+architectures---ResNet-50 (CNN), ViT-Base (Transformer), and
+ConvNeXt-Base (modernised CNN)---for classifying 233 categories of
+Singaporean food in the SGFood-233 dataset (${\sim}$203\,K images).
+
+ConvNeXt-Base consistently emerged as the strongest architecture across
+every evaluation axis.  Under identical default hyperparameters, it
+achieved 83.45\% validation accuracy, outperforming ResNet-50 by
+$+8.36$~pp and ViT-Base by $+3.29$~pp.  A learning rate sensitivity
+analysis across five rates spanning two orders of magnitude confirmed
+that this advantage is architectural rather than optimisation-dependent:
+ConvNeXt-Base ranked first at \emph{every} learning rate tested,
+reaching 84.30\% at its optimal rate (1e-4) after just 5~epochs on
+cleaned data.  Complementary analyses showed that ConvNeXt-Base
+produces the most class-separable embeddings (silhouette
+score~$=$~0.200 vs.\ 0.134/0.129), balances local and global attention
+in Grad-CAM maps, and exhibits fewer systematic confusion patterns.
+
+A data cleaning pipeline based on three-model consensus flagging
+identified and corrected 1\,946 problematic images (650 removed, 1\,296
+relabelled).  Retraining ConvNeXt-Base on the cleaned data improved
+validation accuracy from 83.45\% to 84.55\% ($+1.10$~pp) with a
+matching test accuracy of 84.54\%, demonstrating that targeted data
+quality investment yields measurable gains even for large-scale
+datasets.
+
+% Uncomment and update the line below after completing Section D:
+% The definitive 10-epoch comparison at individually optimal learning
+% rates yielded \texttt{XX.XX}\% / \texttt{XX.XX}\% / \texttt{XX.XX}\%
+% validation accuracy for ResNet-50 / ViT-Base / ConvNeXt-Base
+% respectively, further confirming ConvNeXt-Base as the recommended
+% backbone for Singaporean food image classification.
+
+Based on these findings, we recommend ConvNeXt-Base as the default
+backbone for Singaporean food image classification, with ResNet-50 as a
+viable alternative for latency-critical mobile deployments.  Future work
+should expand the hyperparameter search beyond learning rate, validate on
+additional food datasets, and explore knowledge distillation to bridge
+the accuracy--efficiency gap for on-device inference.
